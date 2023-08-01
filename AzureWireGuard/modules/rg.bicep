@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-param code string
+param code int
 param location string
 param tags object
 

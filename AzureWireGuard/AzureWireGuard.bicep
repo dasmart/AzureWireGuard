@@ -1,6 +1,12 @@
 param timeStamp string = utcNow('u')
 param location string = 'eastus'
-param code string = substring(uniqueString(subscription().id, location), 5, 9)
+// param code string = substring(uniqueString(subscription().id, location), 5, 9)
+
+param code int = dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))
+// var convertedDatetime = dateTimeFromEpoch(convertedEpoch)
+// output epochValue int = convertedEpoch
+// output datetimeValue string = convertedDatetime
+
 param tags object = {}
 param vmSize string = 'Standard_DS2_v2'
 @maxLength(16)
