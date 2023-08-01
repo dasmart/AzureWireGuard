@@ -8,7 +8,7 @@ The quickest way to setup your own modern VPN server.
 - Create an [Ubuntu Server][ubuntu] Virtual Machine.
     - You will be prompted for a password during the deployment.
 - A [Network Security Group][azure-nsg] with firewall rules is attached to the Virtual Machine.
-    - Port 51820 is enabled for WireGuard
+    - Port 563 is enabled for WireGuard
     - Port 22 is enabled for SSH. Disable this port once you download the config files and enable it only for maintenance.
 - Install WireGuard Server.
 - Configure WireGuard Server

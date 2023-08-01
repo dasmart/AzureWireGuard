@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## unattended-upgrade
-apt-get update -y 
+apt-get update -y
 unattended-upgrades --verbose
 
 ## IP Forwarding
@@ -10,8 +10,8 @@ sed -i -e 's/#net.ipv6.conf.all.forwarding.*/net.ipv6.conf.all.forwarding=1/g' /
 sysctl -p
 
 ## Install WireGurard
-add-apt-repository ppa:wireguard/wireguard -y 
-apt-get update -y 
+add-apt-repository ppa:wireguard/wireguard -y
+apt-get update -y
 apt-get install linux-headers-$(uname -r) -y
 apt-get install wireguard -y
 
@@ -62,9 +62,9 @@ client_ten_public_key=$(</home/$2/WireGuardSecurityKeys/client_ten_public_key)
 cat > /etc/wireguard/wg0.conf << EOF
 [Interface]
 Address = 10.13.13.1/24
+ListenPort = 563
 SaveConfig = true
 PrivateKey = $server_private_key
-ListenPort = 51820
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
@@ -122,16 +122,17 @@ EOF
 # Client Configs
 cat > /home/$2/wg0-client-1.conf << EOF
 [Interface]
+Address = 10.13.13.101
+ListenPort = 563
 PrivateKey = $client_one_private_key
-Address = 10.13.13.101/32
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -139,16 +140,17 @@ chmod go+r /home/$2/wg0-client-1.conf
 
 cat > /home/$2/wg0-client-2.conf << EOF
 [Interface]
+Address = 10.13.13.102
+ListenPort = 563
 PrivateKey = $client_two_private_key
-Address = 10.13.13.102/32
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -156,16 +158,17 @@ chmod go+r /home/$2/wg0-client-2.conf
 
 cat > /home/$2/wg0-client-3.conf << EOF
 [Interface]
+Address = 10.13.13.103
+ListenPort = 563
 PrivateKey = $client_three_private_key
-Address = 10.13.13.103/32
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -173,16 +176,17 @@ chmod go+r /home/$2/wg0-client-3.conf
 
 cat > /home/$2/wg0-client-4.conf << EOF
 [Interface]
+Address = 10.13.13.104
 PrivateKey = $client_four_private_key
-Address = 10.13.13.104/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -190,16 +194,17 @@ chmod go+r /home/$2/wg0-client-4.conf
 
 cat > /home/$2/wg0-client-5.conf << EOF
 [Interface]
+Address = 10.13.13.105
 PrivateKey = $client_five_private_key
-Address = 10.13.13.105/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -207,16 +212,17 @@ chmod go+r /home/$2/wg0-client-5.conf
 
 cat > /home/$2/wg0-client-6.conf << EOF
 [Interface]
+Address = 10.13.13.106
 PrivateKey = $client_six_private_key
-Address = 10.13.13.106/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -224,16 +230,17 @@ chmod go+r /home/$2/wg0-client-6.conf
 
 cat > /home/$2/wg0-client-7.conf << EOF
 [Interface]
+Address = 10.13.13.107
 PrivateKey = $client_seven_private_key
-Address = 10.13.13.107/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -241,16 +248,17 @@ chmod go+r /home/$2/wg0-client-7.conf
 
 cat > /home/$2/wg0-client-8.conf << EOF
 [Interface]
+Address = 10.13.13.108
 PrivateKey = $client_eight_private_key
-Address = 10.13.13.108/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -258,16 +266,17 @@ chmod go+r /home/$2/wg0-client-8.conf
 
 cat > /home/$2/wg0-client-9.conf << EOF
 [Interface]
+Address = 10.13.13.109
 PrivateKey = $client_nine_private_key
-Address = 10.13.13.109/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
@@ -275,23 +284,24 @@ chmod go+r /home/$2/wg0-client-9.conf
 
 cat > /home/$2/wg0-client-10.conf << EOF
 [Interface]
+Address = 10.13.13.110
 PrivateKey = $client_ten_private_key
-Address = 10.13.13.110/32
+ListenPort = 563
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:51820
+EndPoint = $1:563
 AllowedIps = 0.0.0.0/0, ::/0
-PersistentKeepAlive = 25
+# PersistentKeepAlive = 25
 
 EOF
 
 chmod go+r /home/$2/wg0-client-10.conf
 
-## Firewall 
-ufw allow 51820/udp
+## Firewall
+ufw allow 563/udp
 ufw allow 22/tcp
 ufw enable
 
@@ -306,5 +316,5 @@ apt-get full-upgrade -y
 apt-get autoremove -y
 apt-get clean
 
-## Shutdown 
+## Shutdown
 shutdown -r 1440

@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "code": {
-      "value": "xeaaf7dc"
+      "value": "1690908386"
     },
     "adminUsername": {
-      "value": "vmadmin"
+      "value": "nkvz8439053"
     },
     "adminPassword": {
-      "value": "A_Really_Str0ng_P@ssw0rd"
+      "value": "sxa4KAF4jNzNwY9to7"
     },
     "location": {
-      "value": "eastus2"
+      "value": "eastus"
     },
     "vmSize": {
       "value": "Standard_DS2_v2"
