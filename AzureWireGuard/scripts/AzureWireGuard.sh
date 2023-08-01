@@ -61,7 +61,7 @@ client_ten_public_key=$(</home/$2/WireGuardSecurityKeys/client_ten_public_key)
 # Server Config
 cat > /etc/wireguard/wg0.conf << EOF
 [Interface]
-Address = 10.13.13.1/24
+Address = 10.13.13.1
 ListenPort = 563
 SaveConfig = true
 PrivateKey = $server_private_key
