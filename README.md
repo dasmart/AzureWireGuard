@@ -52,7 +52,7 @@ Some knowledge of how [Azure Bicep templates][azure-bicep] work is really helpfu
 # Customizing the deployment
 - While deploying the Bicep template you can pass a parameters file
 
-    `az deployment sub create --name wireguard --location eastus --template-file .\AzureWireGuard\AzureWireGuard.bicep --parameters "@AzureWireGuard\AzureWireGuard.parameters.json"`
+    `az deployment sub create --location eastus --template-file ./AzureWireGuard/AzureWireGuard.bicep --parameters ./AzureWireGuard/AzureWireGuard.parameters.json`
 
 - The template parameters available for customization are
 
