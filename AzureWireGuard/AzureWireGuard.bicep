@@ -10,7 +10,7 @@ param code int = dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))
 param tags object = {}
 param vmSize string = 'Standard_DS2_v2'
 @maxLength(16)
-param adminUsername string = 'nkvz8439053'
+param adminUsername string = 'vmadmin'
 @minLength(12)
 @secure()
 param adminPassword string
