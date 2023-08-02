@@ -65,8 +65,12 @@ Address = 10.13.13.1
 ListenPort = 563
 SaveConfig = true
 PrivateKey = $server_private_key
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+# PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+PostUp = iptables -t nat -A PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563; ip6tables -t nat -A PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563
+PostDown = iptables -t nat -D PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563; ip6tables -t nat -D PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563
+
 
 [Peer]
 PublicKey =  $client_one_public_key
@@ -449,6 +453,7 @@ TCPKeepAlive no
 # disable reverse DNS lookups
 UseDNS no
 
+
 EOF
 
 chmod go+r /etc/ssh/sshd_config
@@ -456,6 +461,8 @@ chmod 644 /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
 ## Firewall
+ufw allow 123/udp
+ufw allow 443/udp
 ufw allow 563/udp
 ufw allow 22/tcp
 ufw enable

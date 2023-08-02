@@ -8,7 +8,35 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-09-0
   properties: {
     securityRules: [
       {
-        name: 'Allow-WireGuard-Inbound'
+        name: 'Allow-WireGuard-Inbound-123'
+        properties: {
+          description: 'Allow Wireguard 123'
+          protocol: 'Udp'
+          sourcePortRange: '*'
+          destinationPortRange: '123'
+          sourceAddressPrefix: 'Internet'
+          destinationAddressPrefix: 'VirtualNetwork'
+          access: 'Allow'
+          priority: 1001
+          direction: 'Inbound'
+        }
+      }
+      {
+        name: 'Allow-WireGuard-Inbound-443'
+        properties: {
+          description: 'Allow Wireguard 443'
+          protocol: 'Udp'
+          sourcePortRange: '*'
+          destinationPortRange: '443'
+          sourceAddressPrefix: 'Internet'
+          destinationAddressPrefix: 'VirtualNetwork'
+          access: 'Allow'
+          priority: 1002
+          direction: 'Inbound'
+        }
+      }
+      {
+        name: 'Allow-WireGuard-Inbound-563'
         properties: {
           description: 'Allow Wireguard 563'
           protocol: 'Udp'
@@ -17,7 +45,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-09-0
           sourceAddressPrefix: 'Internet'
           destinationAddressPrefix: 'VirtualNetwork'
           access: 'Allow'
-          priority: 1001
+          priority: 1003
           direction: 'Inbound'
         }
       }
@@ -31,7 +59,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-09-0
           sourceAddressPrefix: 'Internet'
           destinationAddressPrefix: 'VirtualNetwork'
           access: 'Allow'
-          priority: 1002
+          priority: 1004
           direction: 'Inbound'
         }
       }
