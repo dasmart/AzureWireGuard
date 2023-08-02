@@ -65,11 +65,8 @@ Address = 10.13.13.1
 ListenPort = 563
 SaveConfig = true
 PrivateKey = $server_private_key
-# PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-# PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
-PostUp = iptables -t nat -A PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563; ip6tables -t nat -A PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563
-PostDown = iptables -t nat -D PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563; ip6tables -t nat -D PREROUTING -i eth0 -p udp -m multiport --dports 123,443 -j REDIRECT --to-port 563
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 
 [Peer]

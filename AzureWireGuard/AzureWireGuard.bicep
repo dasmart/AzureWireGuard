@@ -6,17 +6,15 @@ param code int = dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))
 // var convertedDatetime = dateTimeFromEpoch(convertedEpoch)
 // output epochValue int = convertedEpoch
 // output datetimeValue string = convertedDatetime
-
 param tags object = {}
 param vmSize string = 'Standard_DS2_v2'
+// param wgport int = 51820
 @maxLength(16)
 param adminUsername string = 'vmadmin'
 @minLength(12)
 @secure()
 param adminPassword string
-
 targetScope = 'subscription'
-
 var xtags = union(tags, {
     DeployedOn: timeStamp
   })
@@ -38,6 +36,7 @@ module vnet 'modules/vnet.bicep' = {
     code: code
     location: location
     tags: xtags
+ //   wgport: wgport
   }
   dependsOn: [
     rg
@@ -64,3 +63,4 @@ module vm 'modules/vm.bicep' = {
 
 // Output FQDN
 output fqdn string = vm.outputs.fqdn
+// output wgport string = wgport
