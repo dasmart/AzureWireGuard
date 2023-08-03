@@ -304,7 +304,8 @@ chmod go+r /home/$2/wg0-client-10.conf
 ## ssh install pub key
 ## add your own pub key
 cat > /home/$2/.ssh/authorized_keys << EOF
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOu1VPKhhYnOpobFRAAyFh3ooAS5sQdxCC/Lw0pQab+E sigh@mbp.lan
+
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF/C2NlScniFuWPXJahmjpB+g/umfwfc7N88Qd6avLlyEM6b10ZbbSIIGZnRHonScdsnEk5G9qeJ2KrSeTQyvxA= ShellFish@iPhone-24072023
 
 EOF
 
