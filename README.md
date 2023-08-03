@@ -8,7 +8,7 @@ The quickest way to setup your own modern VPN server.
 - Create an [Ubuntu Server][ubuntu] Virtual Machine.
     - You will be prompted for a password during the deployment.
 - A [Network Security Group][azure-nsg] with firewall rules is attached to the Virtual Machine.
-    - Port 563 is enabled for WireGuard
+    - Port 123 is enabled for WireGuard
     - Port 22 is enabled for SSH. Disable this port once you download the config files and enable it only for maintenance.
 - Install WireGuard Server.
 - Configure WireGuard Server
@@ -89,6 +89,32 @@ Some knowledge of how [Azure Bicep templates][azure-bicep] work is really helpfu
 
 # Azure ARM Version
 The earlier version of AzureWireGuard used [Azure ARM templates][azure-arm]. It is no longer maintained but is available on the branch named [arm-retired][git-repo-retired]
+
+# Helpfull Commands
+
+- list the resource groups in a sub
+
+    `az deployment sub list --output table`
+
+- delete a resource group
+
+
+    `az deployment sub delete -n SomeDeployment`
+
+
+- list the resource groups in a sub
+
+    `az group list --output table`
+
+
+- delete a resource group
+
+    `az group delete --name SomeResourceGroup`
+
+- one liner to replace the port number
+
+    `grep -r -l <oldPort> * | xargs sed -i 's/<oldPort>/<newPort>/g'`
+
 
 # Contributing
 - Fork the repo on [GitHub][git-repo]

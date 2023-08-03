@@ -62,7 +62,7 @@ client_ten_public_key=$(</home/$2/WireGuardSecurityKeys/client_ten_public_key)
 cat > /etc/wireguard/wg0.conf << EOF
 [Interface]
 Address = 10.13.13.1
-ListenPort = 563
+ListenPort = 123
 SaveConfig = true
 PrivateKey = $server_private_key
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -124,14 +124,14 @@ EOF
 cat > /home/$2/wg0-client-1.conf << EOF
 [Interface]
 Address = 10.13.13.101
-ListenPort = 563
+ListenPort = 123
 PrivateKey = $client_one_private_key
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -142,14 +142,14 @@ chmod go+r /home/$2/wg0-client-1.conf
 cat > /home/$2/wg0-client-2.conf << EOF
 [Interface]
 Address = 10.13.13.102
-ListenPort = 563
+ListenPort = 123
 PrivateKey = $client_two_private_key
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -160,14 +160,14 @@ chmod go+r /home/$2/wg0-client-2.conf
 cat > /home/$2/wg0-client-3.conf << EOF
 [Interface]
 Address = 10.13.13.103
-ListenPort = 563
+ListenPort = 123
 PrivateKey = $client_three_private_key
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -179,13 +179,13 @@ cat > /home/$2/wg0-client-4.conf << EOF
 [Interface]
 Address = 10.13.13.104
 PrivateKey = $client_four_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -197,13 +197,13 @@ cat > /home/$2/wg0-client-5.conf << EOF
 [Interface]
 Address = 10.13.13.105
 PrivateKey = $client_five_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -215,13 +215,13 @@ cat > /home/$2/wg0-client-6.conf << EOF
 [Interface]
 Address = 10.13.13.106
 PrivateKey = $client_six_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -233,13 +233,13 @@ cat > /home/$2/wg0-client-7.conf << EOF
 [Interface]
 Address = 10.13.13.107
 PrivateKey = $client_seven_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -251,13 +251,13 @@ cat > /home/$2/wg0-client-8.conf << EOF
 [Interface]
 Address = 10.13.13.108
 PrivateKey = $client_eight_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -269,13 +269,13 @@ cat > /home/$2/wg0-client-9.conf << EOF
 [Interface]
 Address = 10.13.13.109
 PrivateKey = $client_nine_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -287,13 +287,13 @@ cat > /home/$2/wg0-client-10.conf << EOF
 [Interface]
 Address = 10.13.13.110
 PrivateKey = $client_ten_private_key
-ListenPort = 563
+ListenPort = 123
 DNS = 1.1.1.1
 
 [Peer]
 PublicKey =  $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:563
+EndPoint = $1:123
 AllowedIps = 0.0.0.0/0, ::/0
 # PersistentKeepAlive = 25
 
@@ -305,7 +305,8 @@ chmod go+r /home/$2/wg0-client-10.conf
 ## add your own pub key
 cat > /home/$2/.ssh/authorized_keys << EOF
 
-ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF/C2NlScniFuWPXJahmjpB+g/umfwfc7N88Qd6avLlyEM6b10ZbbSIIGZnRHonScdsnEk5G9qeJ2KrSeTQyvxA= ShellFish@iPhone-24072023
+# ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF/C2NlScniFuWPXJahmjpB+g/umfwfc7N88Qd6avLlyEM6b10ZbbSIIGZnRHonScdsnEk5G9qeJ2KrSeTQyvxA= ShellFish@iPhone-24072023
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJA+MuBUE1Q7Mxy+CG+FUTF14qYyNF8hYg57WCWlxq6d sigh@mbp.lan
 
 EOF
 
@@ -460,8 +461,6 @@ sudo systemctl restart ssh
 
 ## Firewall
 ufw allow 123/udp
-ufw allow 443/udp
-ufw allow 563/udp
 ufw allow 22/tcp
 ufw enable
 
