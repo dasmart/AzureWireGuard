@@ -8,7 +8,6 @@ param code int = dateTimeToEpoch(dateTimeAdd(utcNow(), 'P1Y'))
 // output datetimeValue string = convertedDatetime
 param tags object = {}
 param vmSize string = 'Standard_DS2_v2'
-// param wgport int = 51820
 @maxLength(16)
 param adminUsername string = 'vmadmin'
 @minLength(12)

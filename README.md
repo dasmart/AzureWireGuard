@@ -14,12 +14,12 @@ The quickest way to setup your own modern VPN server.
 - Configure WireGuard Server
     - Create Private and Public Keys for Server and Client.
     - Create the Server Configuration.
-    - The WireGuard interface IP address is set to 10.13.13.1.
+    - The WireGuard interface IP address is set to 10.31.31.1.
 - Setup NAT on the server to forward client traffic to the internet.
 - Start the WireGuard Interface.
 - Configure WireGuard to auto start.
 - Generate ten client configuration files, which you can download and start using. 
-    - The ten clients are given the IP addresses 10.13.13.101 to 10.13.13.110.
+    - The ten clients are given the IP addresses 10.31.31.101 to 10.31.31.110.
     - The Client DNS server is set to [1.1.1.1][dns].
 - Enable [UFW][ufw] firewall.
 - Install Ubuntu Server Upgrades.
