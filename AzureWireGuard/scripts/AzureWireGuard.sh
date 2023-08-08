@@ -14,6 +14,7 @@ sysctl -p
 apt-get update -y
 apt-get install linux-headers-$(uname -r) -y
 apt-get install wireguard -y
+apt-get install sshguard -y
 
 ## Configure WireGuard
 
@@ -27,11 +28,6 @@ wg genkey | tee /home/$2/WireGuardSecurityKeys/client_two_private_key | wg pubke
 wg genkey | tee /home/$2/WireGuardSecurityKeys/client_three_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_three_public_key
 wg genkey | tee /home/$2/WireGuardSecurityKeys/client_four_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_four_public_key
 wg genkey | tee /home/$2/WireGuardSecurityKeys/client_five_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_five_public_key
-wg genkey | tee /home/$2/WireGuardSecurityKeys/client_six_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_six_public_key
-wg genkey | tee /home/$2/WireGuardSecurityKeys/client_seven_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_seven_public_key
-wg genkey | tee /home/$2/WireGuardSecurityKeys/client_eight_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_eight_public_key
-wg genkey | tee /home/$2/WireGuardSecurityKeys/client_nine_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_nine_public_key
-wg genkey | tee /home/$2/WireGuardSecurityKeys/client_ten_private_key | wg pubkey > /home/$2/WireGuardSecurityKeys/client_ten_public_key
 
 # Generate configuration files
 server_private_key=$(</home/$2/WireGuardSecurityKeys/server_private_key)
@@ -47,16 +43,6 @@ client_four_private_key=$(</home/$2/WireGuardSecurityKeys/client_four_private_ke
 client_four_public_key=$(</home/$2/WireGuardSecurityKeys/client_four_public_key)
 client_five_private_key=$(</home/$2/WireGuardSecurityKeys/client_five_private_key)
 client_five_public_key=$(</home/$2/WireGuardSecurityKeys/client_five_public_key)
-client_six_private_key=$(</home/$2/WireGuardSecurityKeys/client_six_private_key)
-client_six_public_key=$(</home/$2/WireGuardSecurityKeys/client_six_public_key)
-client_seven_private_key=$(</home/$2/WireGuardSecurityKeys/client_seven_private_key)
-client_seven_public_key=$(</home/$2/WireGuardSecurityKeys/client_seven_public_key)
-client_eight_private_key=$(</home/$2/WireGuardSecurityKeys/client_eight_private_key)
-client_eight_public_key=$(</home/$2/WireGuardSecurityKeys/client_eight_public_key)
-client_nine_private_key=$(</home/$2/WireGuardSecurityKeys/client_nine_private_key)
-client_nine_public_key=$(</home/$2/WireGuardSecurityKeys/client_nine_public_key)
-client_ten_private_key=$(</home/$2/WireGuardSecurityKeys/client_ten_private_key)
-client_ten_public_key=$(</home/$2/WireGuardSecurityKeys/client_ten_public_key)
 
 # Server Config
 cat > /etc/wireguard/wg0.conf << EOF
@@ -94,30 +80,6 @@ PublicKey =  $client_five_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.105/32
 
-[Peer]
-PublicKey =  $client_six_public_key
-PresharedKey = $preshared_key
-AllowedIps = 10.13.13.106/32
-
-[Peer]
-PublicKey =  $client_seven_public_key
-PresharedKey = $preshared_key
-AllowedIps = 10.13.13.107/32
-
-[Peer]
-PublicKey =  $client_eight_public_key
-PresharedKey = $preshared_key
-AllowedIps = 10.13.13.108/32
-
-[Peer]
-PublicKey =  $client_nine_public_key
-PresharedKey = $preshared_key
-AllowedIps = 10.13.13.109/32
-
-[Peer]
-PublicKey =  $client_ten_public_key
-PresharedKey = $preshared_key
-AllowedIps = 10.13.13.110/32
 EOF
 
 # Client Configs
@@ -211,95 +173,6 @@ EOF
 
 chmod go+r /home/$2/wg0-client-5.conf
 
-cat > /home/$2/wg0-client-6.conf << EOF
-[Interface]
-Address = 10.13.13.106
-PrivateKey = $client_six_private_key
-ListenPort = 123
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey =  $server_public_key
-PresharedKey = $preshared_key
-EndPoint = $1:123
-AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
-
-EOF
-
-chmod go+r /home/$2/wg0-client-6.conf
-
-cat > /home/$2/wg0-client-7.conf << EOF
-[Interface]
-Address = 10.13.13.107
-PrivateKey = $client_seven_private_key
-ListenPort = 123
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey =  $server_public_key
-PresharedKey = $preshared_key
-EndPoint = $1:123
-AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
-
-EOF
-
-chmod go+r /home/$2/wg0-client-7.conf
-
-cat > /home/$2/wg0-client-8.conf << EOF
-[Interface]
-Address = 10.13.13.108
-PrivateKey = $client_eight_private_key
-ListenPort = 123
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey =  $server_public_key
-PresharedKey = $preshared_key
-EndPoint = $1:123
-AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
-
-EOF
-
-chmod go+r /home/$2/wg0-client-8.conf
-
-cat > /home/$2/wg0-client-9.conf << EOF
-[Interface]
-Address = 10.13.13.109
-PrivateKey = $client_nine_private_key
-ListenPort = 123
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey =  $server_public_key
-PresharedKey = $preshared_key
-EndPoint = $1:123
-AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
-
-EOF
-
-chmod go+r /home/$2/wg0-client-9.conf
-
-cat > /home/$2/wg0-client-10.conf << EOF
-[Interface]
-Address = 10.13.13.110
-PrivateKey = $client_ten_private_key
-ListenPort = 123
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey =  $server_public_key
-PresharedKey = $preshared_key
-EndPoint = $1:123
-AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
-
-EOF
-
-chmod go+r /home/$2/wg0-client-10.conf
 
 ## ssh install pub key
 ## add your own pub key
@@ -309,6 +182,9 @@ cat > /home/$2/.ssh/authorized_keys << EOF
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJA+MuBUE1Q7Mxy+CG+FUTF14qYyNF8hYg57WCWlxq6d sigh@mbp.lan
 
 EOF
+
+## set up sshguard
+echo 'BLACKLIST_FILE=200:/var/log/sshguard/blacklist.db' >> /etc/sshguard/sshguard.conf
 
 ## ssh hardening
 mv /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -458,6 +334,9 @@ EOF
 chmod go+r /etc/ssh/sshd_config
 chmod 644 /etc/ssh/sshd_config
 sudo systemctl restart ssh
+
+# sudo service sshguard restart
+sudo systemctl restart sshguard
 
 ## Firewall
 ufw allow 123/udp
