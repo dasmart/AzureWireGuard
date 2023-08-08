@@ -1,4 +1,5 @@
 #!/bin/bash
+hostname=$(hostname -s)
 
 ## unattended-upgrade
 apt-get update -y
@@ -83,7 +84,7 @@ AllowedIps = 10.13.13.105/32
 EOF
 
 # Client Configs
-cat > /home/$2/wg0-client-1.conf << EOF
+cat > /home/$2/wg0-$hostname-1.conf << EOF
 [Interface]
 Address = 10.13.13.101
 ListenPort = 123
@@ -99,9 +100,9 @@ AllowedIps = 0.0.0.0/0, ::/0
 
 EOF
 
-chmod go+r /home/$2/wg0-client-1.conf
+chmod go+r /home/$2/wg0-$hostname-1.conf
 
-cat > /home/$2/wg0-client-2.conf << EOF
+cat > /home/$2/wg0-$hostname-2.conf << EOF
 [Interface]
 Address = 10.13.13.102
 ListenPort = 123
@@ -117,9 +118,9 @@ AllowedIps = 0.0.0.0/0, ::/0
 
 EOF
 
-chmod go+r /home/$2/wg0-client-2.conf
+chmod go+r /home/$2/wg0-$hostname-2.conf
 
-cat > /home/$2/wg0-client-3.conf << EOF
+cat > /home/$2/wg0-$hostname-3.conf << EOF
 [Interface]
 Address = 10.13.13.103
 ListenPort = 123
@@ -135,9 +136,9 @@ AllowedIps = 0.0.0.0/0, ::/0
 
 EOF
 
-chmod go+r /home/$2/wg0-client-3.conf
+chmod go+r /home/$2/wg0-$hostname-3.conf
 
-cat > /home/$2/wg0-client-4.conf << EOF
+cat > /home/$2/wg0-$hostname-4.conf << EOF
 [Interface]
 Address = 10.13.13.104
 PrivateKey = $client_four_private_key
@@ -153,9 +154,9 @@ AllowedIps = 0.0.0.0/0, ::/0
 
 EOF
 
-chmod go+r /home/$2/wg0-client-4.conf
+chmod go+r /home/$2/wg0-$hostname-4.conf
 
-cat > /home/$2/wg0-client-5.conf << EOF
+cat > /home/$2/wg0-$hostname-5.conf << EOF
 [Interface]
 Address = 10.13.13.105
 PrivateKey = $client_five_private_key
@@ -171,20 +172,21 @@ AllowedIps = 0.0.0.0/0, ::/0
 
 EOF
 
-chmod go+r /home/$2/wg0-client-5.conf
+chmod go+r /home/$2/wg0-$hostname-5.conf
 
 
 ## ssh install pub key
 ## add your own pub key
 cat > /home/$2/.ssh/authorized_keys << EOF
-
-# ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF/C2NlScniFuWPXJahmjpB+g/umfwfc7N88Qd6avLlyEM6b10ZbbSIIGZnRHonScdsnEk5G9qeJ2KrSeTQyvxA= ShellFish@iPhone-24072023
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJA+MuBUE1Q7Mxy+CG+FUTF14qYyNF8hYg57WCWlxq6d sigh@mbp.lan
 
 EOF
 
 ## set up sshguard
 echo 'BLACKLIST_FILE=200:/var/log/sshguard/blacklist.db' >> /etc/sshguard/sshguard.conf
+mkdir -p /var/log/sshguard
+touch /var/log/sshguard/blacklist.db
+
 
 ## ssh hardening
 mv /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
