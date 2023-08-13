@@ -11,10 +11,10 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-09-0
             {
         name: 'Allow-WireGuard-Inbound'
         properties: {
-          description: 'Allow Wireguard 123'
+          description: 'Allow Wireguard 51820'
           protocol: 'Udp'
           sourcePortRange: '*'
-          destinationPortRange: '123'
+          destinationPortRange: '51820'
           sourceAddressPrefix: 'Internet'
           destinationAddressPrefix: 'VirtualNetwork'
           access: 'Allow'

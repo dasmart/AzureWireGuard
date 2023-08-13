@@ -8,18 +8,18 @@ The quickest way to setup your own modern VPN server.
 - Create an [Ubuntu Server][ubuntu] Virtual Machine.
     - You will be prompted for a password during the deployment.
 - A [Network Security Group][azure-nsg] with firewall rules is attached to the Virtual Machine.
-    - Port 123 is enabled for WireGuard
+    - Port 51820 is enabled for WireGuard
     - Port 22 is enabled for SSH. Disable this port once you download the config files and enable it only for maintenance.
 - Install WireGuard Server.
 - Configure WireGuard Server
     - Create Private and Public Keys for Server and Client.
     - Create the Server Configuration.
-    - The WireGuard interface IP address is set to 10.31.31.1.
+    - The WireGuard interface IP address is set to 10.13.13.1.
 - Setup NAT on the server to forward client traffic to the internet.
 - Start the WireGuard Interface.
 - Configure WireGuard to auto start.
 - Generate ten client configuration files, which you can download and start using. 
-    - The ten clients are given the IP addresses 10.31.31.101 to 10.31.31.110.
+    - The ten clients are given the IP addresses 10.13.13.101 to 10.13.13.110.
     - The Client DNS server is set to [1.1.1.1][dns].
 - Enable [UFW][ufw] firewall.
 - Install Ubuntu Server Upgrades.
@@ -98,14 +98,15 @@ The earlier version of AzureWireGuard used [Azure ARM templates][azure-arm]. It 
 
 - delete a resource group
 
-
     `az deployment sub delete -n SomeDeployment`
-
 
 - list the resource groups in a sub
 
     `az group list --output table`
 
+- delete all your resource groups
+
+	`az group list --tag delete --query [].name -o tsv | xargs -otl az group delete --no-wait  -n`
 
 - delete a resource group
 
@@ -114,6 +115,13 @@ The earlier version of AzureWireGuard used [Azure ARM templates][azure-arm]. It 
 - one liner to replace the port number
 
     `grep -r -l <oldPort> * | xargs sed -i 's/<oldPort>/<newPort>/g'`
+
+
+- Display a QR code of a Wireguard Configuration
+
+    `qrencode -t ansiutf8 < wg-[client].conf`
+    
+-     
 
 
 # Contributing

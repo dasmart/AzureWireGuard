@@ -6,9 +6,9 @@ apt-get update -y
 unattended-upgrades --verbose
 
 ## IP Forwarding
-sed -i -e 's/#net.ipv4.ip_forward.*/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-sed -i -e 's/#net.ipv6.conf.all.forwarding.*/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
-sysctl -p
+# sed -i -e 's/#net.ipv4.ip_forward.*/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+#sed -i -e 's/#net.ipv6.conf.all.forwarding.*/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
+# sysctl -p
 
 ## Install WireGurard
 # add-apt-repository ppa:wireguard/wireguard -y
@@ -16,6 +16,7 @@ apt-get update -y
 apt-get install linux-headers-$(uname -r) -y
 apt-get install wireguard -y
 apt-get install sshguard -y
+apt-get install qrencode -y
 
 ## Configure WireGuard
 
@@ -45,11 +46,17 @@ client_four_public_key=$(</home/$2/WireGuardSecurityKeys/client_four_public_key)
 client_five_private_key=$(</home/$2/WireGuardSecurityKeys/client_five_private_key)
 client_five_public_key=$(</home/$2/WireGuardSecurityKeys/client_five_public_key)
 
+## IP Forwarding
+sed -i -e 's/#net.ipv4.ip_forward.*/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+sed -i -e 's/#net.ipv6.conf.all.forwarding.*/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
+sysctl -p
+
+
 # Server Config
 cat > /etc/wireguard/wg0.conf << EOF
 [Interface]
-Address = 10.13.13.1
-ListenPort = 123
+Address = 10.13.13.1/24
+ListenPort = 51820
 SaveConfig = true
 PrivateKey = $server_private_key
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -57,27 +64,27 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
 
 
 [Peer]
-PublicKey =  $client_one_public_key
+PublicKey = $client_one_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.101/32
 
 [Peer]
-PublicKey =  $client_two_public_key
+PublicKey = $client_two_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.102/32
 
 [Peer]
-PublicKey =  $client_three_public_key
+PublicKey = $client_three_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.103/32
 
 [Peer]
-PublicKey =  $client_four_public_key
+PublicKey = $client_four_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.104/32
 
 [Peer]
-PublicKey =  $client_five_public_key
+PublicKey = $client_five_public_key
 PresharedKey = $preshared_key
 AllowedIps = 10.13.13.105/32
 
@@ -86,17 +93,17 @@ EOF
 # Client Configs
 cat > /home/$2/wg0-$hostname-1.conf << EOF
 [Interface]
-Address = 10.13.13.101
-ListenPort = 123
+Address = 10.13.13.101/32
+ListenPort = 51820
 PrivateKey = $client_one_private_key
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey =  $server_public_key
+PublicKey = $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:123
+EndPoint = $1:51820
 AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
+PersistentKeepAlive = 25
 
 EOF
 
@@ -104,17 +111,17 @@ chmod go+r /home/$2/wg0-$hostname-1.conf
 
 cat > /home/$2/wg0-$hostname-2.conf << EOF
 [Interface]
-Address = 10.13.13.102
-ListenPort = 123
+Address = 10.13.13.102/32
+ListenPort = 51820
 PrivateKey = $client_two_private_key
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey =  $server_public_key
+PublicKey = $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:123
+EndPoint = $1:51820
 AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
+PersistentKeepAlive = 25
 
 EOF
 
@@ -122,17 +129,17 @@ chmod go+r /home/$2/wg0-$hostname-2.conf
 
 cat > /home/$2/wg0-$hostname-3.conf << EOF
 [Interface]
-Address = 10.13.13.103
-ListenPort = 123
+Address = 10.13.13.103/32
+ListenPort = 51820
 PrivateKey = $client_three_private_key
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey =  $server_public_key
+PublicKey = $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:123
+EndPoint = $1:51820
 AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
+PersistentKeepAlive = 25
 
 EOF
 
@@ -140,17 +147,17 @@ chmod go+r /home/$2/wg0-$hostname-3.conf
 
 cat > /home/$2/wg0-$hostname-4.conf << EOF
 [Interface]
-Address = 10.13.13.104
+Address = 10.13.13.104/32
 PrivateKey = $client_four_private_key
-ListenPort = 123
+ListenPort = 51820
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey =  $server_public_key
+PublicKey = $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:123
+EndPoint = $1:51820
 AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
+PersistentKeepAlive = 25
 
 EOF
 
@@ -158,25 +165,34 @@ chmod go+r /home/$2/wg0-$hostname-4.conf
 
 cat > /home/$2/wg0-$hostname-5.conf << EOF
 [Interface]
-Address = 10.13.13.105
+Address = 10.13.13.105/32
 PrivateKey = $client_five_private_key
-ListenPort = 123
+ListenPort = 51820
 DNS = 1.1.1.1
 
 [Peer]
-PublicKey =  $server_public_key
+PublicKey = $server_public_key
 PresharedKey = $preshared_key
-EndPoint = $1:123
+EndPoint = $1:51820
 AllowedIps = 0.0.0.0/0, ::/0
-# PersistentKeepAlive = 25
+PersistentKeepAlive = 25
 
 EOF
 
 chmod go+r /home/$2/wg0-$hostname-5.conf
 
+## add bash history
+cat > /home/$2/.bash_history << EOF
+qrencode -t ansiutf8 < wg-
+
+EOF
+
+chown $2:$2 /home/$2/wg0-$hostname-5.conf
+
 
 ## ssh install pub key
 ## add your own pub key
+
 cat > /home/$2/.ssh/authorized_keys << EOF
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJA+MuBUE1Q7Mxy+CG+FUTF14qYyNF8hYg57WCWlxq6d sigh@mbp.lan
 
@@ -187,6 +203,9 @@ echo 'BLACKLIST_FILE=200:/var/log/sshguard/blacklist.db' >> /etc/sshguard/sshgua
 mkdir -p /var/log/sshguard
 touch /var/log/sshguard/blacklist.db
 
+## whitelist wg clients
+echo '10.13.13.96/28' >> /etc/sshguard/whitelist
+
 
 ## ssh hardening
 mv /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -195,9 +214,9 @@ cat > /etc/ssh/sshd_config << EOF
 ########## Binding ##########
 
 # SSH server listening address and port
-#Port 22
-#ListenAddress 0.0.0.0
-#ListenAddress ::
+Port 22
+ListenAddress 0.0.0.0
+ListenAddress ::
 
 # only listen to IPv4
 #AddressFamily inet
@@ -247,7 +266,7 @@ X11Forwarding no
 AllowUsers $2
 
 # permit only users within the specified groups to login
-#AllowGroups $2
+AllowGroups $2
 
 # uncomment the following options to permit only pubkey authentication
 # be aware that this will disable password authentication
@@ -338,10 +357,10 @@ chmod 644 /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
 # sudo service sshguard restart
-sudo systemctl restart sshguard
+# sudo systemctl restart sshguard
 
 ## Firewall
-ufw allow 123/udp
+ufw allow 51820/udp
 ufw allow 22/tcp
 ufw enable
 
